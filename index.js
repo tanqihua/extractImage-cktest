@@ -27,7 +27,12 @@ const bucket = admin.storage().bucket();
 
 app.get("/", async (req, res) => {
   const { url } = req.query;
-
+  if (url === undefined) {
+    res.send({
+      status: "error",
+      message: "url is required",
+    });
+  }
   const _urll =
     url ??
     "https://firebasestorage.googleapis.com/v0/b/testerdemo-888a3.appspot.com/o/cktest-sg%2Fd7cc432c1fa7470d8a818c74466ce548.png?alt=media&token=6dd322ea-19e0-4583-855c-d31223aff413";
