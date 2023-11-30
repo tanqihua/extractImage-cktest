@@ -9,48 +9,53 @@ masking.src = fs.readFileSync("./images/masking.png");
 async function createImage(url, callBack = () => {}) {
   // Usage
   let _url = await ReplicateAIP(url);
-  getImageBuffer(_url)
-    .then((buffer) => {
-      const img = new Canvas.Image();
+  try {
+    getImageBuffer(_url)
+      .then((buffer) => {
+        const img = new Canvas.Image();
 
-      img.src = buffer;
+        img.src = buffer;
 
-      // before
-      const canvas = Canvas.createCanvas(1920, 1080);
-      const ctx = canvas.getContext("2d");
+        // before
+        const canvas = Canvas.createCanvas(1920, 1080);
+        const ctx = canvas.getContext("2d");
 
-      ctx.drawImage(img, 0, 0, 1920, 1080);
+        ctx.drawImage(img, 0, 0, 1920, 1080);
 
-      // masking
-      ctx.drawImage(masking, 0, 0, 1920, 1080);
+        // masking
+        ctx.drawImage(masking, 0, 0, 1920, 1080);
 
-      // get all pixel data
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      const data = imageData.data;
+        // get all pixel data
+        const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        const data = imageData.data;
 
-      // change pixel data
-      for (let i = 0; i < data.length; i += 4) {
-        // get rgb
-        const r = data[i];
-        const g = data[i + 1];
-        const b = data[i + 2];
+        // change pixel data
+        for (let i = 0; i < data.length; i += 4) {
+          // get rgb
+          const r = data[i];
+          const g = data[i + 1];
+          const b = data[i + 2];
 
-        if (g >= 100 && r < 100 && b < 100) {
-          data[i] = 0;
-          data[i + 1] = 0;
-          data[i + 2] = 0;
-          data[i + 3] = 0;
+          if (g >= 100 && r < 100 && b < 100) {
+            data[i] = 0;
+            data[i + 1] = 0;
+            data[i + 2] = 0;
+            data[i + 3] = 0;
+          }
         }
-      }
-      // put data back
-      ctx.putImageData(imageData, 0, 0);
+        // put data back
+        ctx.putImageData(imageData, 0, 0);
 
-      const imageBuffer = canvas.toBuffer("image/png", { quality: 0.8 });
-      callBack(imageBuffer);
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+        const imageBuffer = canvas.toBuffer("image/png", { quality: 0.8 });
+
+        callBack(imageBuffer);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 // let imgg = createImage(
