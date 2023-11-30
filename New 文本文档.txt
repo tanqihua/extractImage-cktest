@@ -1,0 +1,9 @@
+soundboard
+share
+generate
+copyLink
+closeMusic
+soundOn
+closeMusic
+enterPhotoBooth
+enterWelcome
