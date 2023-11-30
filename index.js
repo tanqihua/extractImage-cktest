@@ -19,7 +19,7 @@ app.listen(port, () => {
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  storageBucket: "unity-coach-holiday.appspot.com",
+  storageBucket: "testerdemo-888a3.appspot.com",
 });
 
 // Get a reference to the storage bucket
@@ -27,6 +27,7 @@ const bucket = admin.storage().bucket();
 
 app.get("/", async (req, res) => {
   const { url } = req.query;
+
   const _urll =
     url ??
     "https://firebasestorage.googleapis.com/v0/b/testerdemo-888a3.appspot.com/o/cktest-sg%2Fd7cc432c1fa7470d8a818c74466ce548.png?alt=media&token=6dd322ea-19e0-4583-855c-d31223aff413";
@@ -34,7 +35,6 @@ app.get("/", async (req, res) => {
   await createImage(_urll, (imageBuffer) => {
     try {
       const bucket = getStorage().bucket();
-
       const file = bucket.file("cktest-sg/" + Date.now() + ".png");
       const options = {
         metadata: {
