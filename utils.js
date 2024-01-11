@@ -45,7 +45,6 @@ const ReplicateAIP = async (target) => {
 async function createImage(url) {
   // Usage
   let _url = await ReplicateAIP(url);
-  console.log(_url);
   let buffer = await getImageBuffer(_url);
   const img = new Canvas.Image();
   img.src = buffer;
@@ -84,12 +83,6 @@ async function createImage(url) {
 
   return imageBuffer;
 }
-
-// async function main() {
-//   let img = await createImage(
-//     "https://storage.googleapis.com/replicate-files/TZsTL6ghqF5iJVVErnO3OhlrPeiKfwvSdGbcReTTDYvGiL6jA/6c60e956-faad-470e-98c4-8d387191af3c.jpg"
-//   );
-// }
 
 module.exports = {
   createImage,
