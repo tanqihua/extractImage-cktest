@@ -10,7 +10,21 @@ const cors = require("cors");
 // websocket
 // Import the ws library
 // Create a WebSocket server
-const wss = new WebSocket.Server({ port: 8080 });
+const app = express();
+const wss = new WebSocket.Server({ noServer: true });
+
+app.use(cors());
+const port = 5000;
+const httpServer = app.listen(port, () => {
+  console.log(`Example app listening at http://localhost:${port}`);
+});
+
+httpServer.on("upgrade", (req, socket, head) => {
+  wss.handleUpgrade(req, socket, head, (ws) => {
+    wss.emit("connection", ws, req);
+  });
+});
+
 let connectedClients = [];
 // Set up a connection listener
 wss.on("connection", (ws) => {
@@ -27,14 +41,6 @@ wss.on("connection", (ws) => {
 
   // Send a message to the client
   ws.send("Hello from server!");
-});
-
-express;
-const app = express();
-const port = 5000;
-app.use(cors());
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
 });
 
 admin.initializeApp({
