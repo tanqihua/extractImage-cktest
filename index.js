@@ -17,21 +17,19 @@ wss.on("connection", (ws) => {
   // When a message is received from a client
   connectedClients.push(ws);
   ws.on("message", (message) => {
-    // console.log("Received: %s", message);
+    console.log("Received: %s", message);
+  });
+
+  ws.on("close", () => {
+    // delete all client
+    connectedClients = connectedClients.filter((client) => client !== ws);
   });
 
   // Send a message to the client
   ws.send("Hello from server!");
 });
 
-// Set up a connection listener
-
-let ws = new WebSocket("ws://localhost:8080");
-ws.onopen = () => {
-  ws.send("Hello from client!");
-};
-
-// express
+express;
 const app = express();
 const port = 5000;
 app.use(cors());
@@ -47,8 +45,7 @@ admin.initializeApp({
 // connect to websocket
 
 app.get("/test", async (req, res) => {
-  const _ws = new WebSocket("ws://localhost:8080");
-
+  const { task } = req.query;
   let url =
     "https://storage.googleapis.com/testerdemo-888a3.appspot.com/ck/1704875938738.png?GoogleAccessId=firebase-adminsdk-6at00%40testerdemo-888a3.iam.gserviceaccount.com&Expires=16446988800&Signature=Mg%2Ftk9tmWum58EXfZ1yYvygl36UyIMWYlaJfp%2Bv6sO%2Bk%2FCSKScB8C8UMBcs2RUW91tBI10Yf%2B4FOP0aXnFTJceuColA4a4sS9U4BBwfkFG3H2lBHDA76zsBhOzoqgppvF8FxUjB2B2c9P68ERWPCMcP57MItnsGOHEplckFb%2FqnhyQUXEFX6q3Ap%2BvXDYyx3Yc%2Bprdz7bBot9ZbNSxHGCgnLcDLkyfKY9NHG7BuIHmlIU4QUeXW0lMuHvo4ltUWxEbg%2FG1nMcFCpCgZXTvEMAgg6JUIhR%2FnTKjO6dTbKHFYonKmbG6jons2NwQ006s7uMop4f70ukEovxHVuD4su8g%3D%3D";
 
@@ -61,11 +58,26 @@ app.get("/test", async (req, res) => {
   });
 });
 
-app.get("/get", async (req, res) => {
+let sequance = 0;
+
+app.get("/addTask", async (req, res) => {
+  const { task } = req.query;
+  // Distribute tasks if there are connected clients
+  sequance += 1;
+  let ramain = sequance % connectedClients.length;
+  if (connectedClients.length > 0) {
+    connectedClients.forEach((client, index) => {
+      if (ramain === index) {
+        client.send([task, sequance, ramain, index].toString());
+      }
+    });
+  }
+
   res.send({
-    connectedClients: connectedClients.length,
+    status: "ok",
   });
 });
+// when task is not empty
 
 app.get("/", async (req, res) => {
   const { url } = req.query;
