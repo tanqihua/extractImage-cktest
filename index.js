@@ -66,14 +66,14 @@ app.get("/test", async (req, res) => {
 
 let sequance = 0;
 
-function addTask(task) {
+function addTask(task, email) {
   // Distribute tasks if there are connected clients
   sequance += 1;
   let ramain = sequance % connectedClients.length;
   if (connectedClients.length > 0) {
     connectedClients.forEach((client, index) => {
       if (ramain === index) {
-        client.send([task, sequance, ramain, index].toString());
+        client.send([task, sequance, ramain, index, email].toString());
       }
     });
   }
@@ -81,8 +81,8 @@ function addTask(task) {
 // when task is not empty
 
 app.get("/", async (req, res) => {
-  const { url } = req.query;
-  if (url === undefined) {
+  const { url, email } = req.query;
+  if (url === undefined || email === undefined) {
     res.send({
       status: "error",
       message: "url is required",
@@ -131,7 +131,7 @@ app.get("/", async (req, res) => {
           })
         );
 
-        addTask(url[0]);
+        addTask(url[0], email);
       });
   });
 });
