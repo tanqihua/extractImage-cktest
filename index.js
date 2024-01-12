@@ -66,8 +66,7 @@ app.get("/test", async (req, res) => {
 
 let sequance = 0;
 
-app.get("/addTask", async (req, res) => {
-  const { task } = req.query;
+function addTask(task) {
   // Distribute tasks if there are connected clients
   sequance += 1;
   let ramain = sequance % connectedClients.length;
@@ -78,11 +77,7 @@ app.get("/addTask", async (req, res) => {
       }
     });
   }
-
-  res.send({
-    status: "ok",
-  });
-});
+}
 // when task is not empty
 
 app.get("/", async (req, res) => {
@@ -93,6 +88,14 @@ app.get("/", async (req, res) => {
       message: "url is required",
     });
   }
+
+  if (connectedClients.length === 0) {
+    res.send({
+      status: "error",
+      message: "no client connected",
+    });
+  }
+
   const _urll =
     url ??
     "https://firebasestorage.googleapis.com/v0/b/testerdemo-888a3.appspot.com/o/cktest-sg%2Fd7cc432c1fa7470d8a818c74466ce548.png?alt=media&token=6dd322ea-19e0-4583-855c-d31223aff413";
@@ -121,15 +124,14 @@ app.get("/", async (req, res) => {
         expires: "03-09-2491",
       })
       .then((url) => {
-        connectedClients.forEach((client) => {
-          client.send(url[0]);
-        });
         res.send(
           JSON.stringify({
             status: "ok",
             url: url[0],
           })
         );
+
+        addTask(url[0]);
       });
   });
 });
