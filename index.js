@@ -50,20 +50,6 @@ admin.initializeApp({
 
 // connect to websocket
 
-app.get("/test", async (req, res) => {
-  const { task } = req.query;
-  let url =
-    "https://storage.googleapis.com/testerdemo-888a3.appspot.com/ck/1704875938738.png?GoogleAccessId=firebase-adminsdk-6at00%40testerdemo-888a3.iam.gserviceaccount.com&Expires=16446988800&Signature=Mg%2Ftk9tmWum58EXfZ1yYvygl36UyIMWYlaJfp%2Bv6sO%2Bk%2FCSKScB8C8UMBcs2RUW91tBI10Yf%2B4FOP0aXnFTJceuColA4a4sS9U4BBwfkFG3H2lBHDA76zsBhOzoqgppvF8FxUjB2B2c9P68ERWPCMcP57MItnsGOHEplckFb%2FqnhyQUXEFX6q3Ap%2BvXDYyx3Yc%2Bprdz7bBot9ZbNSxHGCgnLcDLkyfKY9NHG7BuIHmlIU4QUeXW0lMuHvo4ltUWxEbg%2FG1nMcFCpCgZXTvEMAgg6JUIhR%2FnTKjO6dTbKHFYonKmbG6jons2NwQ006s7uMop4f70ukEovxHVuD4su8g%3D%3D";
-
-  connectedClients.forEach((client) => {
-    client.send(url);
-  });
-
-  res.send({
-    status: "ok",
-  });
-});
-
 let sequance = 0;
 
 function addTask(task, email) {
@@ -79,6 +65,21 @@ function addTask(task, email) {
   }
 }
 // when task is not empty
+
+app.get("/test", (req, res) => {
+  const { email } = req.query;
+  if (connectedClients.length === 0) {
+    res.send({
+      status: "error",
+      message: "no client connected",
+    });
+  } else {
+    res.send("ok");
+  }
+
+  let _url = "https://i.ibb.co/BnwTGtB/2023-11-24-154057.png";
+  addTask(_url, email);
+});
 
 app.get("/", async (req, res) => {
   const { url, email } = req.query;
