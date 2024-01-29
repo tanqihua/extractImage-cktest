@@ -136,3 +136,10 @@ app.get("/", async (req, res) => {
       });
   });
 });
+
+let count = 0;
+
+app.get("/count", (req, res) => {
+  count += 1;
+  res.send(count.toString());
+});
