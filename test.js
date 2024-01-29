@@ -5,7 +5,6 @@ async function axiosTest(url) {
   for (let i = 0; i < 5000; i++) {
     try {
       const response = await axios.get(url);
-      console.log(response.data);
     } catch (error) {
       console.error(error);
     }

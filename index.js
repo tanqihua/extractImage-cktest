@@ -82,26 +82,25 @@ app.get("/test", (req, res) => {
 });
 
 app.get("/", async (req, res) => {
-  const { url, email } = req.query;
-  if (url === undefined || email === undefined) {
+  const { url, colorTone } = req.query;
+  if (url === undefined) {
     res.send({
       status: "error",
       message: "url is required",
     });
   }
 
-  if (connectedClients.length === 0) {
-    res.send({
-      status: "error",
-      message: "no client connected",
-    });
-  }
+  // if (connectedClients.length === 0) {
+  //   res.send({
+  //     status: "error",
+  //     message: "no client connected",
+  //   });
+  // }
+  // addTask(url[0], email);
 
-  const _urll =
-    url ??
-    "https://firebasestorage.googleapis.com/v0/b/testerdemo-888a3.appspot.com/o/cktest-sg%2Fd7cc432c1fa7470d8a818c74466ce548.png?alt=media&token=6dd322ea-19e0-4583-855c-d31223aff413";
+  const _urll = url;
 
-  const imageBuffer = await createImage(_urll);
+  const imageBuffer = await createImage(_urll, colorTone);
 
   const bucket = getStorage().bucket();
 
@@ -131,8 +130,6 @@ app.get("/", async (req, res) => {
             url: url[0],
           })
         );
-
-        addTask(url[0], email);
       });
   });
 });

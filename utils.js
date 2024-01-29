@@ -28,13 +28,33 @@ function getImageBuffer(url) {
   });
 }
 
-const ReplicateAIP = async (target) => {
+const ReplicateAIP = async (target, colorTone) => {
+  let colorToneImg;
+
+  switch (colorTone) {
+    case "#5F463A":
+      colorToneImg = "https://i.ibb.co/55CBpQS/model-transparent.png";
+      break;
+    case "#A96636":
+      colorToneImg = "https://i.ibb.co/55CBpQS/model-transparent.png";
+      break;
+    case "#EAC098":
+      colorToneImg = "https://i.ibb.co/55CBpQS/model-transparent.png";
+      break;
+    case "#F9D2A2":
+      colorToneImg = "https://i.ibb.co/55CBpQS/model-transparent.png";
+      break;
+
+    default:
+      colorToneImg = "https://i.ibb.co/55CBpQS/model-transparent.png";
+      break;
+  }
   const output = await replicate.run(
     "omniedgeio/face-swap:c2d783366e8d32e6e82c40682fab6b4c23b9c6eff2692c0cf7585fc16c238cfe",
     {
       input: {
         swap_image: target,
-        target_image: "https://i.ibb.co/55CBpQS/model-transparent.png",
+        target_image: colorToneImg,
       },
     }
   );
@@ -42,9 +62,9 @@ const ReplicateAIP = async (target) => {
   return output;
 };
 
-async function createImage(url) {
+async function createImage(url, colorTone) {
   // Usage
-  let _url = await ReplicateAIP(url);
+  let _url = await ReplicateAIP(url, colorTone);
   let buffer = await getImageBuffer(_url);
   const img = new Canvas.Image();
   img.src = buffer;
