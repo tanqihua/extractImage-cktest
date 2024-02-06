@@ -1,5 +1,5 @@
 const admin = require("firebase-admin");
-const serviceAccount = require("./serviceAccountKey.json");
+const serviceAccount = require("./xcs-cloud-firebase-adminsdk-wujtf-7b2d30ee07.json");
 const WebSocket = require("ws");
 
 const express = require("express");
@@ -14,7 +14,7 @@ const app = express();
 const wss = new WebSocket.Server({ noServer: true });
 
 app.use(cors());
-const port = 5000;
+const port = 8080;
 const httpServer = app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
 });
@@ -45,15 +45,16 @@ wss.on("connection", (ws) => {
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  storageBucket: "testerdemo-888a3.appspot.com",
+  storageBucket: "xcs-cloud.appspot.com",
 });
 
 // connect to websocket
 
 let sequance = 0;
+const db = admin.firestore();
 
-function addTask(task, email) {
-  // Distribute tasks if there are connected clients
+function addTask(url, email) {
+  let task = url; // Assuming the URL is stored in a field named 'url'
   sequance += 1;
   let ramain = sequance % connectedClients.length;
   if (connectedClients.length > 0) {
@@ -64,24 +65,14 @@ function addTask(task, email) {
     });
   }
 }
-// when task is not empty
 
-app.get("/test", (req, res) => {
-  const { email } = req.query;
-  if (connectedClients.length === 0) {
-    res.send({
-      status: "error",
-      message: "no client connected",
-    });
-  } else {
-    res.send("ok");
-  }
-
-  let _url = "https://i.ibb.co/BnwTGtB/2023-11-24-154057.png";
-  addTask(_url, email);
+app.get("/add", (req, res) => {
+  const { url, email } = req.query;
+  addTask(url, email ?? "tan.qihua17@gmial.com");
+  res.send("ok");
 });
 
-app.get("/", async (req, res) => {
+app.get("/faceswap", async (req, res) => {
   const { url, colorTone } = req.query;
   if (url === undefined) {
     res.send({
@@ -99,7 +90,6 @@ app.get("/", async (req, res) => {
   // addTask(url[0], email);
 
   const _urll = url;
-
   const imageBuffer = await createImage(_urll, colorTone);
 
   const bucket = getStorage().bucket();
