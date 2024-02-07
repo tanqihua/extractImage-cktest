@@ -31,7 +31,6 @@ function getImageBuffer(url) {
 
 const ReplicateAIP = async (target, colorTone) => {
   let colorToneImg;
-  return "https://firebasestorage.googleapis.com/v0/b/xcs-cloud.appspot.com/o/ck-img%2F27102da2eb7c41c5a32f032c764383670.0928829326036591.jpg?alt=media&token=c3ae8c89-ec45-4eb3-b9b0-5bef4b0abfee";
 
   switch (colorTone) {
     case "#5F463A":
