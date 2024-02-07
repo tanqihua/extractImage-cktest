@@ -31,7 +31,7 @@ function getImageBuffer(url) {
 
 const ReplicateAIP = async (target, colorTone) => {
   let colorToneImg;
-  // return "https://i.ibb.co/D8TCdcY/Demo01.jpg";
+  return "https://i.ibb.co/D8TCdcY/Demo01.jpg";
 
   switch (colorTone) {
     case "#5F463A":
