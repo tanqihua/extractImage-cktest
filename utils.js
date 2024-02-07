@@ -31,7 +31,6 @@ function getImageBuffer(url) {
 
 const ReplicateAIP = async (target, colorTone) => {
   let colorToneImg;
-  // return "https://firebasestorage.googleapis.com/v0/b/xcs-cloud.appspot.com/o/ck-img%2F27102da2eb7c41c5a32f032c764383670.0928829326036591.jpg?alt=media&token=c3ae8c89-ec45-4eb3-b9b0-5bef4b0abfee";
 
   switch (colorTone) {
     case "#5F463A":
@@ -78,17 +77,17 @@ async function createImage(url, colorTone) {
   img.src = buffer;
 
   // before
-  const canvas = Canvas.createCanvas(768, 1324);
+  const canvas = Canvas.createCanvas(768, 1024);
   const ctx = canvas.getContext("2d");
 
   // masking
-  ctx.drawImage(masking, 0, 300, 768, 1024);
+  ctx.drawImage(masking, 0, 0, 768, 1024);
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const data = imageData.data;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  ctx.drawImage(img, 0, 300, 768, 1024);
+  ctx.drawImage(img, 0, 0, 768, 1024);
 
   const imageData2 = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const data2 = imageData2.data;
@@ -112,16 +111,6 @@ async function createImage(url, colorTone) {
   }
   // put data back
   ctx.putImageData(imageData2, 0, 0);
-  let imgData2 = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  for (let i = 0; i < imgData2.data.length; i += 4) {
-    let avg =
-      (imgData2.data[i] + imgData2.data[i + 1] + imgData2.data[i + 2]) / 3;
-    imgData2.data[i] = avg;
-    imgData2.data[i + 1] = avg;
-    imgData2.data[i + 2] = avg;
-  }
-
-  ctx.putImageData(imgData2, 0, 0);
 
   const imageBuffer = canvas.toBuffer("image/png", { quality: 0.8 });
 
@@ -138,5 +127,3 @@ async function main() {
 
   fs.writeFileSync("./test.png", imageBuffer);
 }
-
-// main();
