@@ -8,7 +8,7 @@ masking.src = fs.readFileSync("./images/CG_fullmask.png");
 // r8_FEXRJiQRyY9ljSC3dOWqZDlph1gRXkQ0lTzhP
 
 const replicate = new Replicate({
-  auth: "r8_ErBf6Pi4cMtEMqkvThTB6dQHikGUKSU4SbJV9",
+  auth: "r8_QdHpitQeAHOwPRjSwW5HNgU5PgIlXsB3C43Ou",
 });
 
 function getImageBuffer(url) {
