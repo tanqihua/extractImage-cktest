@@ -31,23 +31,24 @@ function getImageBuffer(url) {
 
 const ReplicateAIP = async (target, colorTone) => {
   let colorToneImg;
+  // return "https://i.ibb.co/D8TCdcY/Demo01.jpg";
 
   switch (colorTone) {
     case "#5F463A":
-      colorToneImg = "https://i.ibb.co/1TwKdMC/Demo01.jpg";
+      colorToneImg = "https://i.ibb.co/D8TCdcY/Demo01.jpg";
       break;
     case "#A96636":
-      colorToneImg = "https://i.ibb.co/1TwKdMC/Demo01.jpg";
+      colorToneImg = "https://i.ibb.co/D8TCdcY/Demo01.jpg";
       break;
     case "#EAC098":
-      colorToneImg = "https://i.ibb.co/1TwKdMC/Demo01.jpg";
+      colorToneImg = "https://i.ibb.co/D8TCdcY/Demo01.jpg";
       break;
     case "#F9D2A2":
-      colorToneImg = "https://i.ibb.co/1TwKdMC/Demo01.jpg";
+      colorToneImg = "https://i.ibb.co/D8TCdcY/Demo01.jpg";
       break;
 
     default:
-      colorToneImg = "https://i.ibb.co/1TwKdMC/Demo01.jpg";
+      colorToneImg = "https://i.ibb.co/D8TCdcY/Demo01.jpg";
       break;
   }
 
@@ -64,7 +65,7 @@ const ReplicateAIP = async (target, colorTone) => {
 
     return output;
   } catch (error) {
-    return "https://firebasestorage.googleapis.com/v0/b/xcs-cloud.appspot.com/o/ck-img%2F27102da2eb7c41c5a32f032c764383670.0928829326036591.jpg?alt=media&token=c3ae8c89-ec45-4eb3-b9b0-5bef4b0abfee";
+    return "https://i.ibb.co/D8TCdcY/Demo01.jpg";
   }
 };
 
@@ -77,17 +78,17 @@ async function createImage(url, colorTone) {
   img.src = buffer;
 
   // before
-  const canvas = Canvas.createCanvas(768, 1024);
+  const canvas = Canvas.createCanvas(1920, 1080);
   const ctx = canvas.getContext("2d");
 
   // masking
-  ctx.drawImage(masking, 0, 0, 768, 1024);
+  ctx.drawImage(masking, 0, 0, 1920, 1080);
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const data = imageData.data;
 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  ctx.drawImage(img, 0, 0, 768, 1024);
+  ctx.drawImage(img, 0, 0, 1920, 1080);
 
   const imageData2 = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const data2 = imageData2.data;
@@ -127,3 +128,5 @@ async function main() {
 
   fs.writeFileSync("./test.png", imageBuffer);
 }
+
+main();
